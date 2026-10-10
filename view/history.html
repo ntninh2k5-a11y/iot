@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lịch Sử Kho - Smart Shelf IoT</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="logo"><i class="bi bi-boxes"></i> Smart Shelf IoT</div>
+  <nav>
+    <a href="index.html"><span class="icon"><i class="bi bi-speedometer2"></i></span><span>Tổng Quan</span></a>
+    <a href="products.html"><span class="icon"><i class="bi bi-tags"></i></span><span>Sản Phẩm</span></a>
+    <a href="assign.html"><span class="icon"><i class="bi bi-card-checklist"></i></span><span>Quy Định Kệ</span></a>
+    <a href="history.html" class="active"><span class="icon"><i class="bi bi-clock-history"></i></span><span>Lịch Sử Kho</span></a>
+    <a href="settings.html"><span class="icon"><i class="bi bi-gear"></i></span><span>Cài Đặt</span></a>
+  </nav>
+  <div class="sys-info">
+    <div><span class="dot on" id="sysStatus"></span> Hệ thống hoạt động</div>
+    <div style="margin-top:6px;font-size:10px" id="lastUpdate">Cập nhật: --</div>
+  </div>
+</aside>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modalTitle">Chi tiết</h2>
+      <button class="close-btn" onclick="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="page-header">
+    <h1><i class="bi bi-clock-history"></i> Lịch Sử Nhập/Xuất Kho</h1>
+    <p>Theo dõi hoạt động nhập xuất hàng hóa</p>
+  </div>
+  <div class="stats-row" id="historyStats"></div>
+  <div class="filter-bar">
+    <select id="historyFilter" onchange="loadHistory()">
+      <option value="">Tất cả ngăn kệ</option>
+      <option value="1">Ngăn kệ #1</option>
+      <option value="2">Ngăn kệ #2</option>
+      <option value="3">Ngăn kệ #3</option>
+      <option value="4">Ngăn kệ #4 (RFID)</option>
+    </select>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>#</th><th>Hành động</th><th>Ngăn kệ</th><th>UID Thẻ</th><th>Tên SP</th><th>Thời gian</th></tr></thead>
+      <tbody id="historyTable"></tbody>
+    </table>
+  </div>
+  <div id="historyPagination" style="display:flex;justify-content:center;align-items:center;gap:15px;margin-top:20px;"></div>
+</div>
+
+<script src="js/utils.js"></script>
+<script src="js/toast.js"></script>
+<script src="js/modal.js"></script>
+<script src="js/history.js"></script>
+<script>
+loadHistorySummary();
+loadHistory();
+</script>
+
+</body>
+</html>

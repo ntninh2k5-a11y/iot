@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sản Phẩm - Smart Shelf IoT</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="logo"><i class="bi bi-boxes"></i> Smart Shelf IoT</div>
+  <nav>
+    <a href="index.html"><span class="icon"><i class="bi bi-speedometer2"></i></span><span>Tổng Quan</span></a>
+    <a href="products.html" class="active"><span class="icon"><i class="bi bi-tags"></i></span><span>Sản Phẩm</span></a>
+    <a href="assign.html"><span class="icon"><i class="bi bi-card-checklist"></i></span><span>Quy Định Kệ</span></a>
+    <a href="history.html"><span class="icon"><i class="bi bi-clock-history"></i></span><span>Lịch Sử Kho</span></a>
+    <a href="settings.html"><span class="icon"><i class="bi bi-gear"></i></span><span>Cài Đặt</span></a>
+  </nav>
+  <div class="sys-info">
+    <div><span class="dot on" id="sysStatus"></span> Hệ thống hoạt động</div>
+    <div style="margin-top:6px;font-size:10px" id="lastUpdate">Cập nhật: --</div>
+  </div>
+</aside>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modalTitle">Chi tiết</h2>
+      <button class="close-btn" onclick="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="page-header">
+    <h1><i class="bi bi-tags-fill"></i> Quản Lý Sản Phẩm</h1>
+    <p>Đăng ký, quản lý sản phẩm và quét thẻ hàng loạt</p>
+  </div>
+
+  <div class="stat-card" style="flex-direction:column;align-items:stretch;gap:16px;margin-bottom:24px">
+    <h3 style="font-size:15px"><i class="bi bi-broadcast"></i> Đăng ký sản phẩm</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div class="form-group" style="margin:0">
+        <label>Tên nhóm sản phẩm (đặt chung cho tất cả)</label>
+        <input type="text" id="batchName" placeholder="VD: Hộp giấy">
+      </div>
+      <div class="form-group" style="margin:0">
+        <label>Nhập UID thủ công</label>
+        <div style="display:flex;gap:8px">
+          <input type="text" id="batchUidInput" placeholder="Nhập UID rồi bấm Thêm" style="flex:1" onkeydown="if(event.key==='Enter')addManualUID()">
+          <button class="btn btn-success" onclick="addManualUID()"><i class="bi bi-plus-lg"></i></button>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-success" id="rfidScanBtn" onclick="startRfidPolling()" style="text-align:center;justify-content:center"><i class="bi bi-broadcast"></i> Bắt đầu quét RFID tự động</button>
+    <div id="rfidScanStatus" style="font-size:12px;text-align:center"><span style="color:var(--text2)">Nhấn "Bắt đầu quét" rồi quẹt thẻ qua đầu đọc, hoặc nhập UID thủ công ở trên</span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span style="font-size:13px;color:var(--text2)">Đã quét: <strong id="scannedCount">0</strong> thẻ</span>
+      <button class="btn btn-sm btn-danger" onclick="clearScannedList()"><i class="bi bi-trash"></i> Xóa DS</button>
+    </div>
+    <div id="scannedList" style="max-height:150px;overflow-y:auto;display:grid;gap:6px">
+      <div style="color:var(--text2);font-size:13px;text-align:center;padding:20px">Chưa có UID nào.</div>
+    </div>
+    <button class="btn btn-primary" onclick="saveBatchProducts()"><i class="bi bi-floppy"></i> Lưu tất cả vào CSDL</button>
+  </div>
+
+  <h3 style="font-size:15px;margin-bottom:12px"><i class="bi bi-pie-chart"></i> Thống kê theo nhóm SP</h3>
+  <div id="productGroups" style="display:grid;gap:8px;margin-bottom:24px">
+    <div style="color:var(--text2);font-size:13px">Đang tải...</div>
+  </div>
+
+  <h3 style="font-size:15px;margin-bottom:12px"><i class="bi bi-list-ul"></i> Danh sách tất cả sản phẩm</h3>
+  <div class="filter-bar">
+    <div style="position:relative; width: 300px;">
+       <i class="bi bi-search" style="position:absolute; left: 10px; top: 10px; color: var(--text2)"></i>
+       <input type="text" id="spSearch" placeholder="Tìm kiếm sản phẩm..." oninput="filterProducts()" style="padding-left: 32px; width: 100%">
+    </div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>UID Thẻ</th><th>Tên sản phẩm</th><th>Vị trí</th><th>Ngày tạo</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+      <tbody id="productTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<script src="js/utils.js"></script>
+<script src="js/toast.js"></script>
+<script src="js/modal.js"></script>
+<script src="js/products.js"></script>
+<script>
+loadProducts();
+</script>
+
+</body>
+</html>
