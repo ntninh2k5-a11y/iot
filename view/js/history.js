@@ -39,7 +39,7 @@ function renderHistoryTable() {
   const p = document.getElementById('historyPagination');
   
   if (!historyData || historyData.length === 0) {
-    tb.innerHTML = '<tr><td colspan="6"><div class="empty-state"><div class="icon"><i class="bi bi-journal-x"></i></div><p>Chưa có lịch sử</p></div></td></tr>';
+    tb.innerHTML = '<tr><td colspan="7"><div class="empty-state"><div class="icon"><i class="bi bi-journal-x"></i></div><p>Chưa có lịch sử</p></div></td></tr>';
     if(p) p.innerHTML = '';
     return;
   }
@@ -55,10 +55,15 @@ function renderHistoryTable() {
   tb.innerHTML = pageData.map((h, i) => `
     <tr>
       <td>${start + i + 1}</td>
-      <td><span class="tag ${h.hanh_dong === 'Nhập kho' ? 'nhap' : 'xuat'}">${h.hanh_dong}</span></td>
+      <td>
+        <span class="tag ${h.hanh_dong === 'Nhập kho' ? 'nhap' : 'xuat'}">${h.hanh_dong}</span>
+        ${h.sai_quy_dinh == 1 ? '<span class="tag sai">Sai quy định</span>' : ''}
+        ${h.ghi_chu === 'Chưa quét RFID' ? '<span class="tag warn">Chưa quét RFID</span>' : ''}
+      </td>
       <td>Ngăn #${h.id_ngan}</td>
       <td><code style="font-size:11px">${h.uid_the || '—'}</code></td>
       <td>${h.ten_sp || '—'}</td>
+      <td style="font-size:12px;color:var(--text2)">${h.sai_quy_dinh == 1 ? (h.ghi_chu || '') : '—'}</td>
       <td style="font-size:12px;color:var(--text2)">${formatTime(h.thoi_gian)}</td>
     </tr>`).join('');
 

@@ -13,20 +13,16 @@ try {
     $stmt = $trangThaiKe->getAll();
     $data = [];
     
- while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-
-    if ($row['id_ngan'] == 4) {
-
-        $stmtProducts = $trangThaiKe->getProductsInShelf(4);
-
-        $product = $stmtProducts->fetch(PDO::FETCH_ASSOC);
-
-        $row['san_pham'] = $product;
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        // Ngăn RFID: trả thêm danh sách sản phẩm đang nằm trong ngăn và số lượng
+        if ($row['id_ngan'] == 4) {
+            $list = $trangThaiKe->getProductsInShelf(4)->fetchAll(PDO::FETCH_ASSOC);
+            $row['san_pham_trong_ke'] = $list;
+            $row['so_luong'] = count($list);
+        }
+        $data[] = $row;
     }
 
-    $data[] = $row;
-}
-    
     echo json_encode([
         "status" => "success",
         "data" => $data

@@ -45,10 +45,10 @@ class LichSuKho {
 
     public function getSummary() {
         $queries = [
-            "total_imports" => "SELECT COUNT(*) as count FROM lich_su_kho WHERE hanh_dong = 'Nhập kho'",
-            "total_exports" => "SELECT COUNT(*) as count FROM lich_su_kho WHERE hanh_dong = 'Xuất kho'",
-            "today_imports" => "SELECT COUNT(*) as count FROM lich_su_kho WHERE hanh_dong = 'Nhập kho' AND DATE(thoi_gian) = CURDATE()",
-            "today_exports" => "SELECT COUNT(*) as count FROM lich_su_kho WHERE hanh_dong = 'Xuất kho' AND DATE(thoi_gian) = CURDATE()"
+            "total_imports" => "SELECT COUNT(*) as count FROM lich_su_kho WHERE hanh_dong = 'Nhập kho' AND sai_quy_dinh = 0",
+            "total_exports" => "SELECT COUNT(*) as count FROM lich_su_kho WHERE hanh_dong = 'Xuất kho' AND sai_quy_dinh = 0",
+            "today_imports" => "SELECT COUNT(*) as count FROM lich_su_kho WHERE hanh_dong = 'Nhập kho' AND sai_quy_dinh = 0 AND DATE(thoi_gian) = CURDATE()",
+            "today_exports" => "SELECT COUNT(*) as count FROM lich_su_kho WHERE hanh_dong = 'Xuất kho' AND sai_quy_dinh = 0 AND DATE(thoi_gian) = CURDATE()"
         ];
         
         $summary = [];

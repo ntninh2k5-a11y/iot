@@ -160,3 +160,7 @@ tr:hover td{background:rgba(255,255,255,.02)}
   .shelf-grid,.assign-grid{grid-template-columns:1fr}
   .stats-row{grid-template-columns:repeat(2,1fr)}
 }
+.tag.warn{background:rgba(245,158,11,.2);color:var(--orange)}
+.tag.sai{background:rgba(239,68,68,.2);color:var(--red)}
+#alertBox{margin-bottom:16px}
+.alert-item{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.4);color:var(--red);padding:10px 14px;border-radius:10px;font-size:13px;font-weight:600;margin-bottom:8px}
